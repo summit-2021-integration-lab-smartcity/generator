@@ -25,6 +25,9 @@ public class Generator {
     @ConfigProperty(name = "bucket.name")
     String bucketName;
 
+    @ConfigProperty(name = "interval.seconds")
+    int intervalSeconds;
+
     Random r = new Random();
 
     @Inject
@@ -32,7 +35,7 @@ public class Generator {
 
     @Outgoing("images")
     public Multi<Message<String>> generate() {
-        return Multi.createFrom().ticks().every(Duration.ofSeconds(2)).onOverflow().drop()
+        return Multi.createFrom().ticks().every(Duration.ofSeconds(intervalSeconds)).onOverflow().drop()
                 .map(tick -> toMessage(getRandomImage()));
     }
 
